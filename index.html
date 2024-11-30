@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма с подтверждением и управлением полями</title>
+    <link rel="stylesheet" href="">
+</head>
+<body>
+    <form id="mainForm">
+        <button type="button" id="confirmButton">Подтвердить действие</button>
+        
+        <input type="text" id="textField" placeholder="Ваше сообщение...">
+        <input type="checkbox" id="checkBox">
+        
+        <div>
+            <button type="button" id="disableButton">Заблокировать поле</button>
+            <button type="button" id="enableButton">Разблокировать поле</button>
+        </div>
+        
+        <div id="textFieldContainer">
+            <input type="text" id="text1" class="hoverable" placeholder="Поле 1"><br>
+            <input type="text" id="text2" class="hoverable" placeholder="Поле 2"><br>
+            <input type="text" id="text3" class="hoverable" placeholder="Поле 3"><br>   
+            <input type="text" id="text4" class="hoverable" placeholder="Поле 4"><br>
+        </div>
+
+        <div id="checkboxContainer">
+            <label><input type="checkbox" class="toggleCheckbox"> Поле 1 <input type="text" class="toggleTextField"></label>
+            <label><input type="checkbox" class="toggleCheckbox"> Поле 2 <input type="text" class="toggleTextField"></label>
+            <label><input type="checkbox" class="toggleCheckbox"> Поле 3 <input type="text" class="toggleTextField"></label>
+        </div>
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const confirmButton = document.getElementById("confirmButton");
+            const textField = document.getElementById("textField");
+            const checkBox = document.getElementById("checkBox");
+            const disableButton = document.getElementById("disableButton");
+            const enableButton = document.getElementById("enableButton");
+            const mainForm = document.getElementById("mainForm");
+
+            confirmButton.addEventListener("click", () => {
+                if (confirm("Вы уверены, что хотите продолжить?")) {
+                    textField.value = "Действие подтверждено!";
+                    checkBox.checked = true;
+                } else {
+                    mainForm.reset();
+                }
+            });
+
+            disableButton.addEventListener("click", () => {
+                textField.disabled = true;
+            });
+
+            enableButton.addEventListener("click", () => {
+                textField.disabled = false;
+            });
+
+            const hoverableFields = document.querySelectorAll(".hoverable");
+            hoverableFields.forEach(field => {
+                field.addEventListener("mouseenter", () => {
+                    field.focus();
+                    field.value = `ID: ${field.id}`;
+                });
+
+                field.addEventListener("mouseleave", () => {
+                    field.blur();
+                    field.value = "";
+                });
+            });
+
+            const toggleCheckboxes = document.querySelectorAll(".toggleCheckbox");
+            toggleCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener("change", (event) => {
+                    const textField = event.target.nextElementSibling;
+                    textField.style.display = checkbox.checked ? "inline" : "none";
+                });
+            });
+        });
+    </script>
+</body>
+</html>
